@@ -1,0 +1,14 @@
+{
+  "name": "is-memes-server",
+  "main": "src/application.ts",
+  "scripts": {
+    "dev": "ts-node-dev -r tsconfig-paths/register --respawn --transpileOnly ./src/application.ts"
+  },
+  "dependencies": {
+    "ts-node": "^8.0.3",
+    "ts-node-dev": "^1.0.0-pre.32",
+    "tsconfig-paths": "^3.8.0",
+    "tslint": "^5.15.0",
+    "typescript": "^3.4.2"
+  }
+}
