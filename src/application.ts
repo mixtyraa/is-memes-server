@@ -1,5 +1,6 @@
 import bodyParser from 'body-parser';
 import Express from 'express';
+import cross from './middleware/AllowCrossDomain';
 import response from './middleware/Response';
 
 import MemesController from 'controllers/MemesController';
@@ -9,6 +10,7 @@ import TypesController from 'controllers/TypesController';
 const express: Express.Application = Express();
 
 express.use(response);
+express.use(cross);
 express.use(bodyParser.json());
 
 express.get('/types', TypesController.getTypes);
