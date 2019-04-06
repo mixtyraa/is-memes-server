@@ -2,9 +2,15 @@
   "name": "is-memes-server",
   "main": "src/application.ts",
   "scripts": {
-    "dev": "ts-node-dev -r tsconfig-paths/register --respawn --transpileOnly ./src/application.ts"
+    "dev": "ts-node-dev -r dotenv/config -r tsconfig-paths/register --respawn --transpileOnly ./src/application.ts",
+    "migrate": "node -r dotenv/config node_modules/knex/bin/cli.js migrate:latest --knexfile=src/database/knexfile.js --migrations-directory=src/database/migrations",
+    "migrate:rollback": "node -r dotenv/config node_modules/knex/bin/cli.js migrate:rollback --knexfile=src/database/knexfile.js --migrations-directory=src/database/migrations"
   },
   "dependencies": {
+    "@types/knex": "^0.16.1",
+    "dotenv": "^7.0.0",
+    "knex": "^0.16.3",
+    "mysql": "^2.16.0",
     "ts-node": "^8.0.3",
     "ts-node-dev": "^1.0.0-pre.32",
     "tsconfig-paths": "^3.8.0",
