@@ -1,6 +1,6 @@
 import {Request, Response} from 'express';
 
-interface IResponse extends Response {
+export interface IResponse extends Response {
     success(data: object): void;
     error(errorCode: number, data?: object): void;
 }
