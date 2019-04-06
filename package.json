@@ -7,8 +7,11 @@
     "migrate:rollback": "node -r dotenv/config node_modules/knex/bin/cli.js migrate:rollback --knexfile=src/database/knexfile.js --migrations-directory=src/database/migrations"
   },
   "dependencies": {
+    "@types/express": "^4.16.1",
     "@types/knex": "^0.16.1",
+    "body-parser": "^1.18.3",
     "dotenv": "^7.0.0",
+    "express": "^4.16.4",
     "knex": "^0.16.3",
     "mysql": "^2.16.0",
     "ts-node": "^8.0.3",
