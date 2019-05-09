@@ -8,7 +8,10 @@ export default class TypeController {
         const knexquery = knex('types').select('id', 'name');
         if (req.query.id) {
             knexquery.where('id', req.query.id);
+        } else if (req.query.q) {
+            knexquery.where('name', 'like', `%${req.query.q}%`);
         }
+
         knexquery.then((data) => {
             if (data.length > 0) {
                 res.success(data);
