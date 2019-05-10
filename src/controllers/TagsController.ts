@@ -23,13 +23,26 @@ export default class TagsController {
 
     public static addTag(req: Request, res: IResponse) {
         if (req.body.name) {
-            knex('tags').insert({
-                name : req.body.name
-            }).then((data) => {
-                knex('tags').select('id', 'name').where('id', data).then((tag) => {
-                    res.success(tag);
-                });
+            knex('tags').select('id', 'name').where('name', 'LIKE', req.body.name).then((data) => {
+                if (data.length > 0) {
+                    res.success({
+                        ...data[0],
+                        isNew: false
+                    });
+                } else {
+                    knex('tags').insert({
+                        name : req.body.name
+                    }).then((newDate) => {
+                        knex('tags').select('id', 'name').where('id', newDate).then((tag) => {
+                            res.success({
+                                ...tag[0],
+                                isNew: true,
+                            });
+                        });
+                    });
+                }
             });
+
         }
     }
 
