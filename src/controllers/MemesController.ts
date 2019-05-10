@@ -1,7 +1,46 @@
+import MemeTypes from 'app/MemeTypes';
 import { knex } from 'database/knex';
 import { Request } from 'express';
+import * as fs from 'fs';
 import { IResponse } from 'middleware/Response';
+import VK from 'vk-io';
+
 export default  class MemesController {
+
+    public static loadImg(req: Request, res: IResponse) {
+        console.log(req.file);
+        if (req.file.mimetype.split('/')[0] !== 'image') {
+            res.error(401, {message: 'Format error'});
+            return;
+        }
+
+        const file = process.env.UPLOAD_PATH
+            + '/'
+            + req.file.filename
+            + '.'
+            + req.file.originalname.split('.').slice(-1)[0];
+
+        fs.rename(req.file.path, file, async (err) => {
+            if (err) {
+                res.error(500);
+                return;
+            }
+
+            const vk = new VK();
+            vk.token = process.env.VK_TOKEN;
+            const vkUrl = await vk.upload.messagePhoto({
+                source: fs.createReadStream(file)
+            });
+
+            const idType = await MemeTypes.defineMemetype(file);
+
+            res.success({
+                type: idType,
+                url: vkUrl.largePhoto
+            });
+            fs.unlinkSync(file);
+        });
+    }
 
     public static getMeme(req: Request, res: IResponse) {
         const knexquery = knex('memes').select(
@@ -145,5 +184,4 @@ export default  class MemesController {
         });
 
     }
-
 }
